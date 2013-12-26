@@ -22,4 +22,13 @@ public class ConvertsRatesTest {
         assertNull(converter.getConversion("FOO", "WAT"));
     }
 
+    @Test
+    public void derivesInverseRates() {
+        Rate[] rates = new Rate[]{
+            new Rate("FOO", "BAR", 1.1d)
+        };
+        ConvertsRates converter = new ConvertsRates(rates);
+        assertEquals((Double) 1.1d, converter.getConversion("FOO", "BAR"));
+        assertEquals((Double) 0.9090909090909091d, converter.getConversion("BAR", "FOO"));
+    }
 }

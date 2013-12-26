@@ -22,4 +22,8 @@ public class Rate {
     public Double getConversion() {
         return conversion;
     }
+
+    public Rate toInverseRate() {
+        return new Rate(to, from, (1.0d / conversion));
+    }
 }
