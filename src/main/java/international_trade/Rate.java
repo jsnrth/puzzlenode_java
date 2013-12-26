@@ -26,4 +26,8 @@ public class Rate {
     public Rate toInverseRate() {
         return new Rate(to, from, (1.0d / conversion));
     }
+
+    public boolean isRate(Rate otherRate) {
+        return getFrom() == otherRate.getFrom() && getTo() == otherRate.getTo();
+    }
 }
