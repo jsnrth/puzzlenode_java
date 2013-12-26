@@ -1,11 +1,18 @@
 package international_trade;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
+
 public class Rate {
+
     private String from;
     private String to;
-    private Double conversion;
+    private BigDecimal conversion;
 
-    public Rate(String startFrom, String startTo, Double startConversion) {
+    public static final MathContext MC = new MathContext(5, RoundingMode.HALF_EVEN);
+
+    public Rate(String startFrom, String startTo, BigDecimal startConversion) {
         from = startFrom;
         to = startTo;
         conversion = startConversion;
@@ -19,11 +26,12 @@ public class Rate {
         return to;
     }
 
-    public Double getConversion() {
+    public BigDecimal getConversion() {
         return conversion;
     }
 
     public Rate toInverseRate() {
-        return new Rate(to, from, (1.0d / conversion));
+        BigDecimal one = new BigDecimal("1.0");
+        return new Rate(to, from, one.divide(conversion, MC));
     }
 }

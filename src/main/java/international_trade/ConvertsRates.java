@@ -1,5 +1,7 @@
 package international_trade;
 
+import java.math.BigDecimal;
+
 public class ConvertsRates {
 
     private Rate[] rates;
@@ -8,8 +10,8 @@ public class ConvertsRates {
         rates = withInverseRates(startingRates);
     }
 
-    public Double getConversion(String from, String to) {
-        Double conversion = null;
+    public BigDecimal getConversion(String from, String to) {
+        BigDecimal conversion = null;
 
         for(Rate rate : rates) {
             if (rate != null && rate.getFrom() == from && rate.getTo() == to) {
@@ -62,7 +64,7 @@ public class ConvertsRates {
                         String newFrom = fromRate.getFrom();
                         String newTo = toRate.getTo();
                         if (newFrom != newTo) {
-                            Double newConversion = fromRate.getConversion() * toRate.getConversion();
+                            BigDecimal newConversion = fromRate.getConversion().multiply(toRate.getConversion(), Rate.MC);
                             Rate derivedRate = new Rate(newFrom, newTo, newConversion);
                             if (!hasRate(rates, derivedRate) && !hasRate(derivedRates, derivedRate)) {
                                 derivedRates[index] = derivedRate;
