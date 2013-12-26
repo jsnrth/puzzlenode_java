@@ -43,9 +43,13 @@ public class ConvertsRates {
 
     private boolean hasRate(Rate[] rates, Rate rate) {
         for (Rate r : rates)
-            if (r != null && r.isRate(rate))
+            if (r != null && isSameRate(r, rate))
                 return true;
         return false;
+    }
+
+    private boolean isSameRate(Rate rate1, Rate rate2) {
+        return rate1.getFrom() == rate2.getFrom() && rate1.getTo() == rate2.getTo();
     }
 
     private int deriveRates(Rate[] rates, String from, String to) {
