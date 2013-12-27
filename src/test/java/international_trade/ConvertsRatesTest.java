@@ -6,7 +6,6 @@ import org.junit.runners.JUnit4;
 
 import java.math.BigDecimal;
 
-import static junit.framework.Assert.assertNull;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(JUnit4.class)
@@ -21,7 +20,6 @@ public class ConvertsRatesTest {
         ConvertsRates converter = new ConvertsRates(rates);
         assertEquals(new BigDecimal("1.1"), converter.getConversion("FOO", "BAR"));
         assertEquals(new BigDecimal("0.9"), converter.getConversion("BAR", "BAZ"));
-        assertNull(converter.getConversion("FOO", "WAT"));
     }
 
     @Test
@@ -50,5 +48,22 @@ public class ConvertsRatesTest {
 
         BigDecimal fooQuxConversion = fooBatConversion.multiply(quxBatRate.toInverseRate().getConversion(), Rate.MC);
         assertEquals("through inverse", fooQuxConversion, converter.getConversion("FOO", "QUX"));
+    }
+
+    @Test(expected = ConversionRateNotFound.class)
+    public void blowsUpWhenRateNotFound() {
+        Rate[] rates = new Rate[0];
+        ConvertsRates converter = new ConvertsRates(rates);
+        converter.getConversion("FOO", "BAR");
+    }
+
+    @Test(expected = ConversionRateNotFound.class)
+    public void blowsUpWhenRateImpossibleToDerive() {
+        Rate fooBarRate = new Rate("FOO", "BAR", new BigDecimal(1.1));
+        Rate barBazRate = new Rate("BAR", "BAZ", new BigDecimal(1.2));
+        Rate quxBatRate = new Rate("QUX", "BAT", new BigDecimal(1.4));
+        Rate[] rates = new Rate[]{fooBarRate, barBazRate,  quxBatRate};
+        ConvertsRates converter = new ConvertsRates(rates);
+        converter.getConversion("FOO", "QUX");
     }
 }

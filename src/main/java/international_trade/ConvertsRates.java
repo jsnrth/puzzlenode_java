@@ -26,7 +26,12 @@ public class ConvertsRates {
                 conversion = getConversion(from, to);
         }
 
-        return conversion;
+        if (conversion != null) {
+            return conversion;
+        }
+        else {
+            throw new ConversionRateNotFound();
+        }
     }
 
     private Rate[] withInverseRates(Rate[] startingRates) {
