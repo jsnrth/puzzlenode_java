@@ -1,12 +1,13 @@
 package international_trade;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 
 public class Conversions {
 
-    private Rate[] rates;
+    private ArrayList<Rate> rates;
 
-    public Conversions(Rate[] startingRates) {
+    public Conversions(ArrayList<Rate> startingRates) {
         rates = withInverseRates(startingRates);
     }
 
@@ -34,21 +35,19 @@ public class Conversions {
         }
     }
 
-    private Rate[] withInverseRates(Rate[] startingRates) {
-        Rate[] newRates = new Rate[startingRates.length * 2];
+    private ArrayList<Rate> withInverseRates(ArrayList<Rate> startingRates) {
+        ArrayList<Rate> newRates = new ArrayList<Rate>(startingRates.size());
         Rate inverseRate;
-        int index = 0;
         for (Rate rate: startingRates) {
-            newRates[index] = rate;
+            newRates.add(rate);
             inverseRate = rate.toInverseRate();
             if (! hasRate(newRates, inverseRate))
-                newRates[index += 1] = inverseRate;
-            index += 1;
+                newRates.add(inverseRate);
         }
         return newRates;
     }
 
-    private boolean hasRate(Rate[] rates, Rate rate) {
+    private boolean hasRate(ArrayList<Rate> rates, Rate rate) {
         for (Rate r : rates)
             if (r != null && isSameRate(r, rate))
                 return true;
@@ -59,8 +58,8 @@ public class Conversions {
         return rate1.getFrom() == rate2.getFrom() && rate1.getTo() == rate2.getTo();
     }
 
-    private int deriveRates(Rate[] rates, String from, String to) {
-        Rate[] derivedRates = new Rate[rates.length];
+    private int deriveRates(ArrayList<Rate> rates, String from, String to) {
+        ArrayList<Rate> derivedRates = new ArrayList<Rate>(rates.size());
         int index = 0;
         for (Rate fromRate : rates) {
             if (fromRate != null && fromRate.getFrom() == from) {
@@ -72,7 +71,7 @@ public class Conversions {
                             BigDecimal newConversion = fromRate.getConversion().multiply(toRate.getConversion(), Rate.MC);
                             Rate derivedRate = new Rate(newFrom, newTo, newConversion);
                             if (!hasRate(rates, derivedRate) && !hasRate(derivedRates, derivedRate)) {
-                                derivedRates[index] = derivedRate;
+                                derivedRates.add(derivedRate);
                                 index += 1;
                             }
                         }
@@ -81,17 +80,17 @@ public class Conversions {
             }
         }
         if (index > 0) {
-            Rate[] newRates = new Rate[rates.length * 2];
+            ArrayList<Rate> newRates = new ArrayList<Rate>(rates.size());
             int nIndex = 0;
             for (Rate rate : rates) {
                 if (rate != null) {
-                    newRates[nIndex] = rate;
+                    newRates.add(rate);
                     nIndex += 1;
                 }
             }
             for (Rate derivedRate : derivedRates) {
                 if (derivedRate != null) {
-                    newRates[nIndex] = derivedRate;
+                    newRates.add(derivedRate);
                     nIndex += 1;
                 }
             }

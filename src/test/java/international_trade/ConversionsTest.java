@@ -5,6 +5,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 
@@ -13,10 +14,9 @@ public class ConversionsTest {
 
     @Test
     public void fetchesAGivenRate(){
-        Rate[] rates = new Rate[] {
-            new Rate("FOO", "BAR", new BigDecimal("1.1")),
-            new Rate("BAR", "BAZ", new BigDecimal("0.9"))
-        };
+        ArrayList<Rate> rates = new ArrayList<Rate>(2);
+        rates.add(new Rate("FOO", "BAR", new BigDecimal("1.1")));
+        rates.add(new Rate("BAR", "BAZ", new BigDecimal("0.9")));
         Conversions converter = new Conversions(rates);
         assertEquals(new BigDecimal("1.1"), converter.getConversion("FOO", "BAR"));
         assertEquals(new BigDecimal("0.9"), converter.getConversion("BAR", "BAZ"));
@@ -24,9 +24,8 @@ public class ConversionsTest {
 
     @Test
     public void derivesInverseRates() {
-        Rate[] rates = new Rate[]{
-            new Rate("FOO", "BAR", new BigDecimal("1.1"))
-        };
+        ArrayList<Rate> rates = new ArrayList<Rate>(1);
+        rates.add(new Rate("FOO", "BAR", new BigDecimal("1.1")));
         Conversions converter = new Conversions(rates);
         assertEquals(new BigDecimal("0.90909"), converter.getConversion("BAR", "FOO"));
     }
@@ -37,7 +36,11 @@ public class ConversionsTest {
         Rate barBazRate = new Rate("BAR", "BAZ", new BigDecimal(1.2));
         Rate bazBatRate = new Rate("BAZ", "BAT", new BigDecimal(1.3));
         Rate quxBatRate = new Rate("QUX", "BAT", new BigDecimal(1.4));
-        Rate[] rates = new Rate[] { fooBarRate, barBazRate, bazBatRate, quxBatRate };
+        ArrayList<Rate> rates = new ArrayList<Rate>();
+        rates.add(fooBarRate);
+        rates.add(barBazRate);
+        rates.add(bazBatRate);
+        rates.add(quxBatRate);
         Conversions converter = new Conversions(rates);
 
         BigDecimal fooBazConversion = fooBarRate.getConversion().multiply(barBazRate.getConversion(), Rate.MC);
@@ -52,8 +55,7 @@ public class ConversionsTest {
 
     @Test(expected = ConversionRateNotFound.class)
     public void blowsUpWhenRateNotFound() {
-        Rate[] rates = new Rate[0];
-        Conversions converter = new Conversions(rates);
+        Conversions converter = new Conversions(new ArrayList<Rate>(0));
         converter.getConversion("FOO", "BAR");
     }
 
@@ -62,7 +64,10 @@ public class ConversionsTest {
         Rate fooBarRate = new Rate("FOO", "BAR", new BigDecimal(1.1));
         Rate barBazRate = new Rate("BAR", "BAZ", new BigDecimal(1.2));
         Rate quxBatRate = new Rate("QUX", "BAT", new BigDecimal(1.4));
-        Rate[] rates = new Rate[]{fooBarRate, barBazRate,  quxBatRate};
+        ArrayList<Rate> rates = new ArrayList<Rate>();
+        rates.add(fooBarRate);
+        rates.add(barBazRate);
+        rates.add(quxBatRate);
         Conversions converter = new Conversions(rates);
         converter.getConversion("FOO", "QUX");
     }

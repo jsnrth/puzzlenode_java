@@ -3,14 +3,15 @@ package international_trade;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 
 public class TransactionsSet {
 
-    private Transaction[] transactions;
+    private ArrayList<Transaction> transactions;
 
     public static final MathContext MC = new MathContext(5, RoundingMode.HALF_EVEN);
 
-    public TransactionsSet(Transaction[] ts){
+    public TransactionsSet(ArrayList<Transaction> ts){
         transactions = ts;
     }
 
