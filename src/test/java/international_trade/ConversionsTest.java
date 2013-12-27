@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(JUnit4.class)
-public class ConvertsRatesTest {
+public class ConversionsTest {
 
     @Test
     public void fetchesAGivenRate(){
@@ -17,7 +17,7 @@ public class ConvertsRatesTest {
             new Rate("FOO", "BAR", new BigDecimal("1.1")),
             new Rate("BAR", "BAZ", new BigDecimal("0.9"))
         };
-        ConvertsRates converter = new ConvertsRates(rates);
+        Conversions converter = new Conversions(rates);
         assertEquals(new BigDecimal("1.1"), converter.getConversion("FOO", "BAR"));
         assertEquals(new BigDecimal("0.9"), converter.getConversion("BAR", "BAZ"));
     }
@@ -27,7 +27,7 @@ public class ConvertsRatesTest {
         Rate[] rates = new Rate[]{
             new Rate("FOO", "BAR", new BigDecimal("1.1"))
         };
-        ConvertsRates converter = new ConvertsRates(rates);
+        Conversions converter = new Conversions(rates);
         assertEquals(new BigDecimal("0.90909"), converter.getConversion("BAR", "FOO"));
     }
 
@@ -38,7 +38,7 @@ public class ConvertsRatesTest {
         Rate bazBatRate = new Rate("BAZ", "BAT", new BigDecimal(1.3));
         Rate quxBatRate = new Rate("QUX", "BAT", new BigDecimal(1.4));
         Rate[] rates = new Rate[] { fooBarRate, barBazRate, bazBatRate, quxBatRate };
-        ConvertsRates converter = new ConvertsRates(rates);
+        Conversions converter = new Conversions(rates);
 
         BigDecimal fooBazConversion = fooBarRate.getConversion().multiply(barBazRate.getConversion(), Rate.MC);
         assertEquals("derives missing", fooBazConversion, converter.getConversion("FOO", "BAZ"));
@@ -53,7 +53,7 @@ public class ConvertsRatesTest {
     @Test(expected = ConversionRateNotFound.class)
     public void blowsUpWhenRateNotFound() {
         Rate[] rates = new Rate[0];
-        ConvertsRates converter = new ConvertsRates(rates);
+        Conversions converter = new Conversions(rates);
         converter.getConversion("FOO", "BAR");
     }
 
@@ -63,7 +63,7 @@ public class ConvertsRatesTest {
         Rate barBazRate = new Rate("BAR", "BAZ", new BigDecimal(1.2));
         Rate quxBatRate = new Rate("QUX", "BAT", new BigDecimal(1.4));
         Rate[] rates = new Rate[]{fooBarRate, barBazRate,  quxBatRate};
-        ConvertsRates converter = new ConvertsRates(rates);
+        Conversions converter = new Conversions(rates);
         converter.getConversion("FOO", "QUX");
     }
 }

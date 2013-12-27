@@ -14,7 +14,7 @@ public class TransactionsSet {
         transactions = ts;
     }
 
-    public BigDecimal totalEverything(String sku, String currency, ConvertsRates converter) {
+    public BigDecimal totalEverything(String sku, String currency, Conversions converter) {
         BigDecimal total = new BigDecimal("0.0");
         for (Transaction t : transactions) {
             if(t != null && t.getSku() == sku) {

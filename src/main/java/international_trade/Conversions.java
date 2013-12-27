@@ -2,11 +2,11 @@ package international_trade;
 
 import java.math.BigDecimal;
 
-public class ConvertsRates {
+public class Conversions {
 
     private Rate[] rates;
 
-    public ConvertsRates(Rate[] startingRates) {
+    public Conversions(Rate[] startingRates) {
         rates = withInverseRates(startingRates);
     }
 

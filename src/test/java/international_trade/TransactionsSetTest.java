@@ -10,7 +10,7 @@ public class TransactionsSetTest {
 
     @Test
     public void convertsTheTransactionsToACurrency(){
-        ConvertsRates converter = new ConvertsRates(new Rate[]{
+        Conversions converter = new Conversions(new Rate[]{
             new Rate("AUD", "CAD", new BigDecimal("1.0079")),
             new Rate("CAD", "USD", new BigDecimal("1.0090")),
             new Rate("USD", "CAD", new BigDecimal("0.9911"))
